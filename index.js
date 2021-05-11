@@ -1,19 +1,17 @@
 require("dotenv").config();
 const express = require("express");
-const fileUpload = require("express-fileupload");
+const Busboy = require("busboy");
+const fs = require("fs");
 const { nanoid } = require("nanoid");
 const app = express();
 const port = process.env.PORT;
 
 let files = [];
 
-app.use(express.static("public"));
+fs.rmdirSync(__dirname + "/files", { recursive: true });
+fs.mkdirSync(__dirname + "/files");
 
-app.use(
-  fileUpload({
-    limits: { fileSize: 2 * 1024 * 1024 * 1024 },
-  })
-);
+app.use(express.static("public"));
 
 app.get("/api/:id/download", (req, res) => {
   let id = req.params.id;
@@ -54,23 +52,30 @@ app.post("/api/:id", (req, res) => {
   let id = req.params.id;
 
   if (files[id]) {
-    if (req.files.file) {
-      let file = req.files.file;
-      files[id].name = file.name;
-      file.mv(__dirname + "/files/" + id, (err) => {
-        if (err) return res.status(500).send(err);
-        return res.sendStatus(200);
-      });
-    } else {
-      return res.sendStatus(400);
-    }
+    if (files[id].uploaded) return res.sendStatus(400);
+
+    let busboy = new Busboy({ headers: req.headers });
+
+    busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
+      files[id].name = filename;
+      file.pipe(fs.createWriteStream(__dirname + "/files/" + id));
+    });
+
+    busboy.on("finish", () => {
+      files[id].uploaded = true;
+      res.send(files[id]);
+    });
+
+    return req.pipe(busboy);
   } else {
     return res.sendStatus(404);
   }
 });
+
 app.get("(/*)?", async (req, res, next) => {
   res.sendFile(__dirname + "/public/index.html");
 });
+
 app.listen(port, () => {
   console.log(`send-it server listening on http://localhost:${port}`);
 });
