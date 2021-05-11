@@ -8,18 +8,12 @@ const port = process.env.PORT;
 
 let files = [];
 
-fs.rmdirSync(__dirname + "/files", { recursive: true });
-fs.mkdirSync(__dirname + "/files");
-
 app.use(express.static("public"));
 
 app.get("/api/:id/download", (req, res) => {
   let id = req.params.id;
 
   if (files[id]) {
-    res.on("finish", () => {
-      fs.unlink(__dirname + "/files/" + id);
-    });
     return res.download(__dirname + "/files/" + id, files[id].name);
   } else {
     return res.sendStatus(404);
