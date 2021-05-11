@@ -17,8 +17,10 @@ app.get("/api/:id/download", (req, res) => {
   let id = req.params.id;
 
   if (files[id]) {
-    res.setHeader(`Content-Disposition`, `attachment; filename="${files[id].name}"`);
-    return res.sendFile(__dirname + "/files/" + id);
+    res.on("finish", () => {
+      fs.unlink(__dirname + "/files/" + id);
+    });
+    return res.download(__dirname + "/files/" + id, files[id].name);
   } else {
     return res.sendStatus(404);
   }
