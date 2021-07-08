@@ -115,7 +115,7 @@
                     if (req.status === 200) {
                         link.innerText = window.location.href + req.response;
                     } else {
-                        alert(req.responseText);
+                        alert("File is too big!");
                     }
                     resetDropZone();
                 }

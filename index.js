@@ -6,7 +6,7 @@ const nanoid = require("nanoid").nanoid;
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080;
-const MAX_FILE_SIZE = process.env.MAX_FILE_SIZE || 1024 * 1024 * 20; // 20MB
+const MAX_FILE_SIZE = 1024 * 1024 * 20; // 20MB
 
 const db = new JSONdb(path.join(__dirname, "database.json"));
 
@@ -32,11 +32,9 @@ app.post("/:name", (req, res) => {
 		.on("data", (data) => {
 			size += data.length;
 			if (size > MAX_FILE_SIZE) {
+				req.destroy();
 				file.close();
-				req.pause();
-				fs.unlink(path.join(__dirname, "files", id), () => {
-					res.status(400).send("The maximum file size is " + MAX_FILE_SIZE + " bytes!");
-				});
+				fs.unlinkSync(path.join(__dirname, "files", id));
 			} else {
 				file.write(data);
 			}
