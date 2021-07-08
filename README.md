@@ -4,6 +4,12 @@
 
 > Easily share your files directly from the terminal.
 
+<details>
+ <summary>Demo</summary>
+  
+ ![demo](https://user-images.githubusercontent.com/37296364/124899622-9925ed00-dfe0-11eb-9e27-cd83472d447f.gif)
+</details>
+
 ## Install
 
 ```sh
