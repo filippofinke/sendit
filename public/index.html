@@ -107,6 +107,7 @@
 
         const uploadFile = (file) => {
             text.innerText = "";
+            link.innerText = "";
             let req = new XMLHttpRequest();
             req.onreadystatechange = () => {
                 if (req.readyState === 4) {
