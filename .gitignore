@@ -1,4 +1,6 @@
-files/
 node_modules/
-.env
 public/
+files/*
+!files/.gitkeep
+.env
+database.json
