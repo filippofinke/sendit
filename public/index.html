@@ -106,6 +106,7 @@
         };
 
         const uploadFile = (file) => {
+            text.innerText = "";
             let req = new XMLHttpRequest();
             req.onreadystatechange = () => {
                 if (req.readyState === 4) {
@@ -126,7 +127,6 @@
             event.preventDefault();
             let file = event.dataTransfer.files[0];
             uploadFile(file);
-            text.innerText = "";
         });
 
         dropzone.addEventListener("dragover", (event) => {
