@@ -1,18 +1,16 @@
 {
   "name": "send-it",
   "version": "1.0.0",
-  "description": "",
+  "description": "Easily share your files directly from the terminal.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Filippo Finke",
   "dependencies": {
-    "busboy": "^0.3.1",
-    "dotenv": "^9.0.0",
+    "dotenv": "^9.0.2",
     "express": "^4.17.1",
-    "nanoid": "^3.1.22"
+    "nanoid": "^3.1.22",
+    "simple-json-db": "^1.2.3"
   }
 }
