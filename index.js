@@ -9,6 +9,8 @@ const port = process.env.PORT || 8080;
 
 const db = new JSONdb(path.join(__dirname, "database.json"));
 
+app.use(express.static("public"));
+
 app.get("/:id", (req, res) => {
   let id = req.params.id;
 

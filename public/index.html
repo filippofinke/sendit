@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sendit</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+        html,
+        body {
+            margin: 0px;
+            padding: 0px;
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Roboto', sans-serif;
+            background-color: #1E2329;
+            color: #adbac7;
+        }
+
+        #file {
+            display: none;
+        }
+
+        #dropzone {
+            font-size: 1.5em;
+            text-align: center;
+            border-radius: 5px;
+            background-color: #2D333B;
+            min-width: 70%;
+            position: relative;
+        }
+
+        #dropzone #text {
+            padding: 50px;
+        }
+
+        #progress {
+            position: absolute;
+            width: 0%;
+            height: 100%;
+            background-color: #242930;
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            flex-direction: column;
+        }
+
+        span {
+            color: #539bf5;
+        }
+
+        span:hover {
+            color: #73b2ff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="dropzone">
+        <div id="progress"></div>
+        <div id="text">Click here or drag and drop the file you want to upload.</div>
+    </div>
+    <br>
+    <span id="link"></span>
+
+    <input id="file" type="file">
+    <script>
+        let link = document.getElementById("link");
+        let dropzone = document.getElementById("dropzone");
+        let progressBar = document.getElementById("progress");
+        let text = document.getElementById("text");
+        let fileInput = document.getElementById("file");
+
+        link.addEventListener("click", (event) => {
+            copyToClipboard(link.innerText);
+        });
+
+        const copyToClipboard = str => {
+            const el = document.createElement('textarea');
+            el.value = str;
+            el.setAttribute('readonly', '');
+            el.style.position = 'absolute';
+            el.style.left = '-9999px';
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+        };
+
+        const resetDropZone = () => {
+            progressBar.innerHTML = "";
+            progressBar.style.width = "0%";
+            dropzone.style.background = "#2D333B";
+            text.innerText = "Click here or drag and drop the file you want to upload.";
+        };
+
+        const uploadFile = (file) => {
+            let req = new XMLHttpRequest();
+            req.onreadystatechange = () => {
+                if (req.readyState === 4) {
+                    link.innerText = window.location.href + req.response;
+                    resetDropZone();
+                }
+            };
+            req.upload.addEventListener("progress", (progress) => {
+                let percent = Math.floor(progress.loaded / progress.total * 100) + "%";
+                progressBar.style.width = percent;
+                progressBar.innerText = percent;
+            });
+            req.open("POST", "/" + file.name, true);
+            req.send(file);
+        }
+
+        dropzone.addEventListener("drop", (event) => {
+            event.preventDefault();
+            let file = event.dataTransfer.files[0];
+            uploadFile(file);
+            text.innerText = "";
+        });
+
+        dropzone.addEventListener("dragover", (event) => {
+            event.preventDefault();
+            dropzone.style.background = "#444c56";
+            text.innerText = "Drop it here!";
+        });
+
+        dropzone.addEventListener("dragleave", (event) => {
+            event.preventDefault();
+            resetDropZone();
+        });
+
+        dropzone.addEventListener("click", (event) => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener("change", (event) => {
+            let file = event.target.files[0];
+            uploadFile(file);
+        });
+    </script>
+</body>
+
+</html>

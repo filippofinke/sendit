@@ -1,5 +1,4 @@
 node_modules/
-public/
 files/*
 !files/.gitkeep
 .env
