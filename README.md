@@ -8,7 +8,8 @@
  <summary>Demo</summary>
  
  <p align="center">
-  <img src="https://user-images.githubusercontent.com/37296364/124899622-9925ed00-dfe0-11eb-9e27-cd83472d447f.gif" alt="Demo">
+  <img src="https://user-images.githubusercontent.com/37296364/124899622-9925ed00-dfe0-11eb-9e27-cd83472d447f.gif" alt="Web UI Demo">
+  <img src="https://user-images.githubusercontent.com/37296364/124900960-ddfe5380-dfe1-11eb-8c21-2822ea8d62bb.gif" alt="Cli demo">
  </p>
 </details>
 
