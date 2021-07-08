@@ -112,7 +112,11 @@
             let req = new XMLHttpRequest();
             req.onreadystatechange = () => {
                 if (req.readyState === 4) {
-                    link.innerText = window.location.href + req.response;
+                    if (req.status === 200) {
+                        link.innerText = window.location.href + req.response;
+                    } else {
+                        alert(req.responseText);
+                    }
                     resetDropZone();
                 }
             };
