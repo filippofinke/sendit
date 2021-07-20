@@ -6,7 +6,7 @@ const nanoid = require("nanoid").nanoid;
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080;
-const MAX_FILE_SIZE = process.env.MAX_FILE_SIZE || 1024 * 1024 * 20; // 20MB
+const MAX_FILE_SIZE = process.env.MAX_FILE_SIZE || 1024 * 1024 * 50; // 50MB
 
 const db = new JSONdb(path.join(__dirname, "database.json"));
 
