@@ -20,18 +20,19 @@ npm install
 ```
 
 ## Usage
-1. Start the server ```npm run start```
-2. Set the SENDIT_API ```export SENDIT_API=http://127.0.0.1```
-3. Upload a file ```./sendit.sh FILE```
-4. Download a file ```./getit.sh ID```
+
+1. Start the server `npm run start`
+2. Set the SENDIT_API `export SENDIT_API=http://127.0.0.1`
+3. Upload a file `./sendit.sh FILE`
+4. Download a file `./getit.sh ID`
 
 ## Author
 
 👤 **Filippo Finke**
 
-* Website: https://filippofinke.ch
-* Github: [@filippofinke](https://github.com/filippofinke)
-* LinkedIn: [@filippofinke](https://linkedin.com/in/filippofinke)
+- Website: https://filippofinke.ch
+- Github: [@filippofinke](https://github.com/filippofinke)
+- LinkedIn: [@filippofinke](https://linkedin.com/in/filippofinke)
 
 ## Show your support
 

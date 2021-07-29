@@ -13,41 +13,41 @@ const db = new JSONdb(path.join(__dirname, "database.json"));
 app.use(express.static("public"));
 
 app.get("/:id", (req, res) => {
-	let id = req.params.id;
+  let id = req.params.id;
 
-	let file = db.get(id);
-	if (file) {
-		return res.download(path.join(__dirname, "files", id), file.name);
-	} else {
-		return res.sendStatus(404);
-	}
+  let file = db.get(id);
+  if (file) {
+    return res.download(path.join(__dirname, "files", id), file.name);
+  } else {
+    return res.sendStatus(404);
+  }
 });
 
 app.post("/:name", (req, res) => {
-	let id = nanoid();
-	let file = fs.createWriteStream(path.join(__dirname, "files", id));
+  let id = nanoid();
+  let file = fs.createWriteStream(path.join(__dirname, "files", id));
 
-	let size = 0;
-	req
-		.on("data", (data) => {
-			size += data.length;
-			if (size > MAX_FILE_SIZE) {
-				req.destroy();
-				file.close();
-				fs.unlinkSync(path.join(__dirname, "files", id));
-			} else {
-				file.write(data);
-			}
-		})
-		.on("end", () => {
-			db.set(id, {
-				name: req.params.name,
-				createdAt: Date.now(),
-			});
-			res.send(id);
-		});
+  let size = 0;
+  req
+    .on("data", (data) => {
+      size += data.length;
+      if (size > MAX_FILE_SIZE) {
+        req.destroy();
+        file.close();
+        fs.unlinkSync(path.join(__dirname, "files", id));
+      } else {
+        file.write(data);
+      }
+    })
+    .on("end", () => {
+      db.set(id, {
+        name: req.params.name,
+        createdAt: Date.now(),
+      });
+      res.send(id);
+    });
 });
 
 app.listen(PORT, () => {
-	console.log(`send-it server listening on http://localhost:${PORT}`);
+  console.log(`send-it server listening on http://localhost:${PORT}`);
 });
