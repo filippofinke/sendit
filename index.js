@@ -1,6 +1,7 @@
 require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
+const cors = require("cors");
 const JSONdb = require("simple-json-db");
 const nanoid = require("nanoid").nanoid;
 const express = require("express");
@@ -10,6 +11,7 @@ const MAX_FILE_SIZE = process.env.MAX_FILE_SIZE || 1024 * 1024 * 50; // 50MB
 
 const db = new JSONdb(path.join(__dirname, "database.json"));
 
+app.use(cors());
 app.use(express.static("public"));
 
 app.get("/:id", (req, res) => {
