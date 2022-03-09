@@ -3,10 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="shortcut icon" href="logo.png" type="image/png" />
     <title>sendit</title>
     <link
@@ -77,9 +74,7 @@
   <body>
     <div id="dropzone">
       <div id="progress"></div>
-      <div id="text">
-        Click here or drag and drop the file you want to upload.
-      </div>
+      <div id="text">Click here or drag and drop the file you want to upload.</div>
     </div>
     <br />
     <span id="link"></span>
@@ -122,8 +117,7 @@
         progressBar.innerHTML = "";
         progressBar.style.width = "0%";
         dropzone.style.background = "#2D333B";
-        text.innerText =
-          "Click here or drag and drop the file you want to upload.";
+        text.innerText = "Click here or drag and drop the file you want to upload.";
         fileInput.value = "";
       };
 
@@ -142,8 +136,7 @@
           }
         };
         req.upload.addEventListener("progress", (progress) => {
-          let percent =
-            Math.floor((progress.loaded / progress.total) * 100) + "%";
+          let percent = Math.floor((progress.loaded / progress.total) * 100) + "%";
           progressBar.style.width = percent;
           progressBar.innerText = percent;
         });
@@ -151,13 +144,15 @@
         req.send(file);
       };
 
-      dropzone.addEventListener("drop", (event) => {
+      window.addEventListener("drop", (event) => {
+        event.stopPropagation();
         event.preventDefault();
         let file = event.dataTransfer.files[0];
         uploadFile(file);
       });
 
-      dropzone.addEventListener("dragover", (event) => {
+      window.addEventListener("dragover", (event) => {
+        event.stopPropagation();
         event.preventDefault();
         dropzone.style.background = "#444c56";
         text.innerText = "Drop it here!";
