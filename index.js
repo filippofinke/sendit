@@ -27,8 +27,13 @@ app.get("/:id", (req, res) => {
 
 app.post("/:name", (req, res) => {
   let id = nanoid();
-  let file = fs.createWriteStream(path.join(__dirname, "files", id));
 
+  let contentLength = req.header("Content-Length");
+  if (contentLength > MAX_FILE_SIZE) {
+    return res.sendStatus(413);
+  }
+
+  let file = fs.createWriteStream(path.join(__dirname, "files", id));
   let size = 0;
   req
     .on("data", (data) => {
