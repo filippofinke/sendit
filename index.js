@@ -30,29 +30,30 @@ app.post("/:name", (req, res) => {
 
   let contentLength = req.header("Content-Length");
   if (contentLength > MAX_FILE_SIZE) {
-    return res.sendStatus(413);
-  }
-
-  let file = fs.createWriteStream(path.join(__dirname, "files", id));
-  let size = 0;
-  req
-    .on("data", (data) => {
-      size += data.length;
-      if (size > MAX_FILE_SIZE) {
-        req.destroy();
-        file.close();
-        fs.unlinkSync(path.join(__dirname, "files", id));
-      } else {
-        file.write(data);
-      }
-    })
-    .on("end", () => {
-      db.set(id, {
-        name: req.params.name,
-        createdAt: Date.now(),
+    req.destroy();
+    res.sendStatus(413);
+  } else {
+    let file = fs.createWriteStream(path.join(__dirname, "files", id));
+    let size = 0;
+    req
+      .on("data", (data) => {
+        size += data.length;
+        if (size > MAX_FILE_SIZE) {
+          req.destroy();
+          file.close();
+          fs.unlinkSync(path.join(__dirname, "files", id));
+        } else {
+          file.write(data);
+        }
+      })
+      .on("end", () => {
+        db.set(id, {
+          name: req.params.name,
+          createdAt: Date.now(),
+        });
+        res.send(id);
       });
-      res.send(id);
-    });
+  }
 });
 
 app.listen(PORT, () => {
