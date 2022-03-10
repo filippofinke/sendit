@@ -1,0 +1,5 @@
+{
+  "env": ["PORT=8080"],
+  "commands": ["npm install", "npm run start"],
+  "port": 8081
+}
